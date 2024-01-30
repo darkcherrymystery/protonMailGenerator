@@ -41,7 +41,8 @@ def getMail():
             text = ctypes.c_char_p(data_locked)
             value = text.value
             kernel32.GlobalUnlock(data_locked)
-            if "@dropmail.me" in str(value) or "@emltmp.com" in str(value) or "@spymail.one" in str(value) or "@10mail.org" in str(value):
+            #if "@dropmail.me" in str(value) or "@emltmp.com" in str(value) or "@spymail.one" in str(value) or "@10mail.org" in str(value): # commented to disable manual filters
+            if True:
                 match = re.search(r'[\w.+-]+@[\w-]+\.[\w.-]+', str(value))
                 return str(match.group(0))
             return False
@@ -93,9 +94,24 @@ def randomize(
     else:
         return 'error'
 
+def getVerificationCode(): # switches to dropmail tab, gets a verification code and returns it
+
+    pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
+    time.sleep(1)
+
+    pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('a'); pyautogui.keyUp('ctrlleft')
+    pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('c'); pyautogui.keyUp('ctrlleft')
+
+    pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
+    time.sleep(5)
+
+    code = str(getClip6digit())
+
+    return code
+
 # Username
 _username_=randomize('-s',5)+randomize('-s',5)+randomize('-s',5)
-pyautogui.typewrite(_username_ + '\t\t')
+pyautogui.typewrite(_username_ + '\t\t\t') #added \t
 print("Username:" + _username_)
 
 # Password
@@ -105,7 +121,7 @@ print("Password:" + _password_)
 
 pyautogui.typewrite('\n')
 time.sleep(5)
-pyautogui.typewrite('\t\t\t\n')
+pyautogui.typewrite('\t\t\t') #removed \n
 
 pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('t'); pyautogui.keyUp('ctrlleft')
 
@@ -136,28 +152,56 @@ while True:
         break
 
 pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
+pyautogui.typewrite('\t\t'); # added \t
 time.sleep(1)
-#äpyautogui.typewrite(newMail)
-pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('v'); pyautogui.keyUp('ctrlleft')
-pyautogui.press('backspace')
-pyautogui.typewrite('\n')
+pyautogui.typewrite(newMail)  # uncommented
+#pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('v'); pyautogui.keyUp('ctrlleft') # commented
+#pyautogui.press('backspace') # commented
+pyautogui.typewrite('\n\n') # added \n
 
 time.sleep(10)
 
-pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
-time.sleep(1)
+while True:
 
-#pyautogui.typewrite('\t\t\t\t\t\t\t\t\t\t\t\t\t\n')
+    verification_code = getVerificationCode()
 
-#time.sleep(5)
+    if verification_code != "[]":
+        break
+
+    else:  
+        
+        pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
+        time.sleep(1)
+
+        pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('r'); pyautogui.keyUp('ctrlleft')
+        time.sleep(5)
+        pyautogui.typewrite('\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t')#28
+        pyautogui.keyDown('ctrlleft')
+        pyautogui.keyDown('shiftleft')
+        pyautogui.keyDown('shiftright')
+        pyautogui.press('down')
+        pyautogui.keyUp('shiftleft')
+        pyautogui.keyUp('shiftright')
+        pyautogui.keyUp('ctrlleft')
+        pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('c'); pyautogui.keyUp('ctrlleft')
+        newMail = getMail()
+
+        pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
+        time.sleep(1)
+
+        pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('v'); pyautogui.keyUp('ctrlleft')
+
+        pyautogui.typewrite('\n')
+
+        # I stopped the debugging here
+
+        # This "While True" block generates new emails and
+        #   checks them until Proton accepts
+
+        # If email is accepted, verification_code will contain a valid verification code
+        # If not, verification_code will contain "[]" text
 
 
-pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('a'); pyautogui.keyUp('ctrlleft')
-pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('c'); pyautogui.keyUp('ctrlleft')
-
-
-pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
-time.sleep(5)
 pyautogui.typewrite(str(getClip6digit()) + '\n')
 
 

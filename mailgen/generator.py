@@ -41,8 +41,8 @@ def getMail():
             text = ctypes.c_char_p(data_locked)
             value = text.value
             kernel32.GlobalUnlock(data_locked)
-            #if "@dropmail.me" in str(value)  or "@10mail.org"  in str(value)  or "@emlpro.com" in str(value) or "@emltmp.com" in str(value): # commented to disable manual filters
-            if True:
+            # if "@dropmail.me" in str(value)  or "@10mail.org"  in str(value)  or "@emlpro.com" in str(value) or "@emltmp.com" in str(value): # commented to disable manual filters
+            if True: # accept eny email hosting here because new email checking function is used later
                 match = re.search(r'[\w.+-]+@[\w-]+\.[\w.-]+', str(value))
                 return str(match.group(0))
             return False
@@ -53,7 +53,7 @@ webbrowser.open('https://google.com')
 time.sleep(5)
 pyautogui.keyDown('ctrlleft'); pyautogui.keyDown('shift'); pyautogui.typewrite('p'); pyautogui.keyUp('ctrlleft'); pyautogui.keyUp('shift')
 pyautogui.typewrite('https://account.proton.me/signup?plan=free\n')
-time.sleep(5)
+time.sleep(5) 
 
 def randomize(
                 _option_,
@@ -101,7 +101,7 @@ def getVerificationCode(): # switches to dropmail tab, gets a verification code 
     pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
     time.sleep(1)
 
-    pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('a'); pyautogui.keyUp('ctrlleft')
+    pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('a'); pyautogui.keyUp('ctrlleft')
     pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('c'); pyautogui.keyUp('ctrlleft')
 
     pyautogui.keyDown('ctrlleft');  pyautogui.typewrite('\t'); pyautogui.keyUp('ctrlleft')
@@ -167,7 +167,8 @@ while True:
 
     verification_code = getVerificationCode()
 
-    if verification_code != "[]":
+    if str(verification_code) != "[]":
+
         break
 
     else:  
@@ -194,14 +195,14 @@ while True:
         pyautogui.keyDown('ctrlleft'); pyautogui.typewrite('v'); pyautogui.keyUp('ctrlleft')
 
         pyautogui.typewrite('\n')
+        time.sleep(20) # sometimes emails are sent with a delay, 20 sec is enough
 
-        # I stopped the debugging here
 
         # This "While True" block generates new emails and
         #   checks them until Proton accepts
 
         # If email is accepted, verification_code will contain a valid verification code
-        # If not, verification_code will contain "[]" text
+        # If not, verification_code will contain "[]"
 
 
 pyautogui.typewrite(str(getClip6digit()) + '\n')
@@ -212,7 +213,7 @@ pyautogui.typewrite('\n')
 time.sleep(5)
 pyautogui.typewrite('\t\t\t\t\n')
 time.sleep(1)
-pyautogui.typewrite('\t\n')
+pyautogui.typewrite('\n') # removed \t
 
 print(_username_+"@proton.me:" + _password_)
 
